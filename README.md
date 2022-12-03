@@ -5,13 +5,22 @@
 ## 使い方
 
 src/contents配下に後述する記法で英文コンテンツを記載したmdファイルを置くと、そのコンテンツの音読学習ページが作成されます。
+
 著作権の関係上、contents配下は非公開です。以下に記載する方法で、コンテンツを追加してください。
 
-### path
+### slug
 
 各学習ページには、`/note/(src/contents以下のパス)`でアクセスできます。
 
 例えば、`src/contents/sample.md`の内容は、`http://localhost:3000/note/sample`ページに反映されます。
+
+#### WARNING
+
+`private`というフォルダ名は、URL上無視されます。
+
+privateフォルダは非公開コンテンツをまとめるためのものとしており、ノート分類を表す単語ではないからです。
+
+そのため、`src/contents/private/sample.md`の内容も、`http://localhost:3000/note/sample`ページに反映されます。
 
 ### frontmatter
 
