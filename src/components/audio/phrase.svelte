@@ -10,7 +10,7 @@
 
   const speak = () => {
     window.speechSynthesis.speak(speaker)
-    speaker.onend = speak
+    //speaker.onend = speak
   }
 
   const stop = () => {
@@ -25,7 +25,7 @@
     })
   }
 
-  onMount(() => {
+  onMount(async () => {
     // 発言を設定
     speaker = new SpeechSynthesisUtterance()
     // テキストを設定
@@ -33,10 +33,10 @@
     // 言語を設定
     speaker.lang = "en-US"
     // 速度を設定
-    speaker.rate = 0.5
-    // 英語に対応しているvoiceを設定
+    speaker.rate = 0.7
+    // 声を設定
     loadVoice()
-    window.speechSynthesis.onvoiceschanged = loadVoice
+    window.speechSynthesis.addEventListener("voiceschanged", loadVoice)
   })
 </script>
 
