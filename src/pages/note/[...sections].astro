@@ -12,7 +12,7 @@ interface Props {
 }
 
 export async function getStaticPaths() {
-  const notes = await Astro.glob("@/contents/**/*.md")
+  const notes = await Astro.glob("@/contents/**/*.mdx")
 
   return notes.map(note => {
     const filepath = note.file
@@ -20,7 +20,7 @@ export async function getStaticPaths() {
     const rootIdx = segments.findIndex(seg => seg === "contents")
     const slugs = segments
       .slice(rootIdx + 1)
-      .map(slug => path.basename(slug, ".md"))
+      .map(slug => path.basename(slug, ".mdx"))
     return {
       params: {
         sections:
@@ -32,16 +32,22 @@ export async function getStaticPaths() {
 }
 
 const { note } = Astro.props
-const { frontmatter } = note
+const { frontmatter, Content } = note
 const { sentence } = frontmatter
 
-const phrases = sentence.split("\n")
+const phrases = sentence.split("\n").map(str => {
+  const _ja = str.match(/<ja>(.*)<\/ja>/)
+  const ja = _ja ? _ja[1] : ""
+  const en = str.replace(`<ja>${ja}</ja>`, "")
+  return { ja, en }
+})
 ---
 
 <BaseLayout frontmatter={frontmatter}>
   {
-    phrases.map(phrase =>
-      phrase.length > 0 ? <Phrase client:load text={phrase} /> : <br />,
+    phrases.map(({ en, ja }) =>
+      en.length > 0 ? <Phrase client:load en={en} ja={ja} /> : <br />,
     )
   }
+  <Content />
 </BaseLayout>

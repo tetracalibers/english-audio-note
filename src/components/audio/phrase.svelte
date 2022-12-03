@@ -3,7 +3,8 @@
   import PlayIcon from "../icons/play-icon.svelte"
   import StopIcon from "../icons/stop-icon.svelte"
 
-  export let text: string
+  export let en: string
+  export let ja = ""
 
   let speaker: SpeechSynthesisUtterance
 
@@ -28,7 +29,7 @@
     // 発言を設定
     speaker = new SpeechSynthesisUtterance()
     // テキストを設定
-    speaker.text = text
+    speaker.text = en
     // 言語を設定
     speaker.lang = "en-US"
     // 速度を設定
@@ -56,7 +57,10 @@
       <StopIcon size="1rem" />
     </button>
   </div>
-  <p class="PhraseSpeaker__phrase">{text}</p>
+  <div class="PhraseSpeaker-Phrase">
+    <p lang="en">{en}</p>
+    <p lang="ja">{ja}</p>
+  </div>
 </div>
 
 <style>
@@ -64,8 +68,12 @@
     display: flex;
   }
 
-  .PhraseSpeaker__phrase {
+  .PhraseSpeaker-Phrase > :lang(en) {
     font-size: 1.5rem;
+  }
+
+  .PhraseSpeaker-Phrase > :lang(ja) {
+    font-size: 0.8rem;
   }
 
   .PhraseSpeaker__buttons {
