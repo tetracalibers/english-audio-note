@@ -1,4 +1,8 @@
-# my
+# my - private
+src/contents/*
+!src/contents/sample.md
+
+# my - dev
 *.txt
 memo.*
 mock
