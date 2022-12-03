@@ -14,7 +14,7 @@ src/contents配下に後述する記法で英文コンテンツを記載したmd
 
 例えば、`src/contents/sample.md`の内容は、`http://localhost:3000/note/sample`ページに反映されます。
 
-#### WARNING
+#### 予約語（？）
 
 `private`というフォルダ名は、URL上無視されます。
 
