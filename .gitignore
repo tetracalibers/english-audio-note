@@ -1,6 +1,5 @@
 # my - private
-src/contents/*
-!src/contents/sample.md
+src/contents/private
 
 # my - dev
 *.txt
