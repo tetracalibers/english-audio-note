@@ -22,7 +22,10 @@ export async function getStaticPaths() {
       .slice(rootIdx + 1)
       .map(slug => path.basename(slug, ".md"))
     return {
-      params: { sections: slugs.join("/") },
+      params: {
+        sections:
+          slugs[0] === "private" ? slugs.slice(1).join("/") : slugs.join("/"),
+      },
       props: { note },
     }
   })
