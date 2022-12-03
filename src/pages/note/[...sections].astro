@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro"
+import { MarkdownInstance } from "astro"
+import path from "node:path"
+
+interface Props {
+  note: MarkdownInstance<{
+    title: string
+    sentence: string
+  }>
+}
+
+export async function getStaticPaths() {
+  const notes = await Astro.glob("@/contents/**/*.md")
+
+  return notes.map(note => {
+    const filepath = note.file
+    const segments = filepath.split("/")
+    const rootIdx = segments.findIndex(seg => seg === "contents")
+    const slugs = segments
+      .slice(rootIdx + 1)
+      .map(slug => path.basename(slug, ".md"))
+    return {
+      params: { sections: slugs.join("/") },
+      props: { note },
+    }
+  })
+}
+
+const { note } = Astro.props
+const { frontmatter } = note
+const { sentence } = frontmatter
+
+const phrases = sentence.split("\n")
+---
+
+<BaseLayout frontmatter={frontmatter} />

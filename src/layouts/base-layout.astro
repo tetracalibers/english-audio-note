@@ -1,0 +1,61 @@
+---
+import "@acab/reset.css"
+const { frontmatter } = Astro.props
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@300;400;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <title>{frontmatter.title}</title>
+  </head>
+  <body>
+    <h1>{frontmatter.title}</h1>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  body {
+    color: #354259;
+    font-family: "Zen Maru Gothic", sans-serif;
+    padding: 2.5rem;
+    background-color: #fff; /* 背景色 */
+    background-image: linear-gradient(
+        90deg,
+        transparent 0%,
+        transparent 50%,
+        #fff 50%,
+        #fff 100%
+      ),
+      /* 点線1の色 */ linear-gradient(180deg, #ccc 1px, transparent 1px); /* 点線2の色と太さ */
+    background-size: 8px 100%, /* 点線1のサイズ */ 100% 2.5em; /* 点線2のサイズ */
+    line-height: 2.5em; /* 文字の高さ */
+  }
+
+  h1 {
+    padding-bottom: 2.5rem;
+  }
+
+  a {
+    color: #354259;
+    text-decoration: none;
+  }
+
+  button {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+  }
+
+  button:hover {
+    cursor: pointer;
+  }
+</style>
