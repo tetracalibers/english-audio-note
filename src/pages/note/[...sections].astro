@@ -1,4 +1,5 @@
 ---
+import Phrase from "@/components/audio/phrase.svelte"
 import BaseLayout from "@/layouts/base-layout.astro"
 import { MarkdownInstance } from "astro"
 import path from "node:path"
@@ -34,4 +35,10 @@ const { sentence } = frontmatter
 const phrases = sentence.split("\n")
 ---
 
-<BaseLayout frontmatter={frontmatter} />
+<BaseLayout frontmatter={frontmatter}>
+  {
+    phrases.map(phrase =>
+      phrase.length > 0 ? <Phrase client:load text={phrase} /> : <br />,
+    )
+  }
+</BaseLayout>
