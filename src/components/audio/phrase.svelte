@@ -20,12 +20,12 @@
 
   const loadVoice = () => {
     const voices = speechSynthesis.getVoices()
-    speaker.voice = voices.find(function (voice) {
+    speaker.voice = voices.find(voice => {
       return voice.name === "Google US English"
     })
   }
 
-  onMount(async () => {
+  onMount(() => {
     // 発言を設定
     speaker = new SpeechSynthesisUtterance()
     // テキストを設定
