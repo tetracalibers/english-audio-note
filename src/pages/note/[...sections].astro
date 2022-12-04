@@ -1,13 +1,21 @@
 ---
 import Phrase from "@/components/audio/phrase.svelte"
+import Word from "@/components/audio/word.svelte"
 import BaseLayout from "@/layouts/base-layout.astro"
 import { MarkdownInstance } from "astro"
 import path from "node:path"
+
+type Word = {
+  en: string
+  ja: string
+  past?: string
+}
 
 interface Props {
   note: MarkdownInstance<{
     title: string
     sentence: string
+    words: { [w in string]: string | Omit<Word, "en"> }[]
   }>
 }
 
@@ -33,7 +41,16 @@ export async function getStaticPaths() {
 
 const { note } = Astro.props
 const { frontmatter, Content } = note
-const { sentence } = frontmatter
+const { sentence = "", words: _words = [] } = frontmatter
+
+const words: Word[] = _words.map(word => {
+  const [en] = Object.keys(word)
+  const [info] = Object.values(word)
+  if (typeof info === "string") {
+    return { en, ja: info }
+  }
+  return { en, ...info }
+})
 
 const phrases = sentence.split("\n").map(str => {
   const _ja = str.match(/<ja>(.*)<\/ja>/)
@@ -44,10 +61,24 @@ const phrases = sentence.split("\n").map(str => {
 ---
 
 <BaseLayout frontmatter={frontmatter}>
-  {
-    phrases.map(({ en, ja }) =>
-      en.length > 0 ? <Phrase client:load en={en} ja={ja} /> : <br />,
-    )
-  }
+  <div>
+    {
+      phrases.map(({ en, ja }) =>
+        en.length > 0 ? <Phrase client:load en={en} ja={ja} /> : <br />,
+      )
+    }
+  </div>
+  <div class="CardLayout">
+    {words.map(word => <Word word={word} />)}
+  </div>
   <Content />
 </BaseLayout>
+
+<style>
+  .CardLayout {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    padding: 2.5rem 0;
+  }
+</style>
