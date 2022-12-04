@@ -1,57 +1,26 @@
 <script lang="ts">
-  import { onMount } from "svelte"
   import PlayIcon from "../icons/play-icon.svelte"
   import StopIcon from "../icons/stop-icon.svelte"
+  import { Speaker } from "./speaker"
 
   export let en: string
   export let ja = ""
 
-  let speaker: SpeechSynthesisUtterance
-
-  const speak = () => {
-    window.speechSynthesis.speak(speaker)
-    //speaker.onend = speak
-  }
-
-  const stop = () => {
-    speaker.onend = null
-    window.speechSynthesis.cancel()
-  }
-
-  const loadVoice = () => {
-    const voices = speechSynthesis.getVoices()
-    speaker.voice = voices.find(voice => {
-      return voice.name === "Google US English"
-    })
-  }
-
-  onMount(() => {
-    // 発言を設定
-    speaker = new SpeechSynthesisUtterance()
-    // テキストを設定
-    speaker.text = en
-    // 言語を設定
-    speaker.lang = "en-US"
-    // 速度を設定
-    speaker.rate = 0.7
-    // 声を設定
-    loadVoice()
-    window.speechSynthesis.addEventListener("voiceschanged", loadVoice)
-  })
+  const speaker = new Speaker(en)
 </script>
 
 <div class="PhraseSpeaker">
   <div class="PhraseSpeaker__buttons">
     <button
       class="PhraseSpeaker-Control --speak"
-      on:click={speak}
+      on:click={speaker.speak}
       aria-label="speak"
     >
       <PlayIcon size="1rem" />
     </button>
     <button
       class="PhraseSpeaker-Control --stop"
-      on:click={stop}
+      on:click={speaker.stop}
       aria-label="stop"
     >
       <StopIcon size="1rem" />

@@ -69,7 +69,7 @@ const phrases = sentence.split("\n").map(str => {
     }
   </div>
   <div class="CardLayout">
-    {words.map(word => <Word word={word} />)}
+    {words.map(word => <Word client:load word={word} />)}
   </div>
   <Content />
 </BaseLayout>

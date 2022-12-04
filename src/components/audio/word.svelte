@@ -1,5 +1,6 @@
 <script lang="ts">
   import PlayIcon from "../icons/play-icon.svelte"
+  import { Speaker } from "./speaker"
 
   interface Word {
     en: string
@@ -8,11 +9,17 @@
   }
 
   export let word: Word
+
   const { en, ja, past } = word
+  const speaker = new Speaker(`${en} ${past ?? ""}`)
 </script>
 
 <div class="WordCard">
-  <button class="WordCard-AudioControl --speak" aria-label="speak">
+  <button
+    class="WordCard-AudioControl --speak"
+    aria-label="speak"
+    on:click={speaker.speak}
+  >
     <PlayIcon />
   </button>
   <section class="WordCard-Content">
