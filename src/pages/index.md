@@ -23,3 +23,8 @@ title: 'English Audio Note'
 
 - [About the author](/note/books/getting-started-with-web-components/contributors/author)
 - [About the reviewer](/note/books/getting-started-with-web-components/contributors/reviewer)
+
+#### Chapter 1
+
+- [Preface](/note/books/getting-started-with-web-components/chapter01/1)
+- [Web Components](/note/books/getting-started-with-web-components/chapter01/2)
