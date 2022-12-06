@@ -1,4 +1,5 @@
 ---
+import Phonetic from "@/components/audio/phonetic.svelte"
 import Phrase from "@/components/audio/phrase.svelte"
 import Word from "@/components/audio/word.svelte"
 import BaseLayout from "@/layouts/base-layout.astro"
@@ -61,24 +62,49 @@ const phrases = sentence.split("\n").map(str => {
 ---
 
 <BaseLayout frontmatter={frontmatter}>
-  <div>
-    {
-      phrases.map(({ en, ja }) =>
-        en.length > 0 ? <Phrase client:load en={en} ja={ja} /> : <br />,
-      )
-    }
+  <div class="root">
+    <div class="main">
+      <div>
+        {
+          phrases.map(({ en, ja }) =>
+            en.length > 0 ? <Phrase client:load en={en} ja={ja} /> : <br />,
+          )
+        }
+      </div>
+      <div class="CardLayout">
+        {words.map(word => <Word client:load word={word} />)}
+      </div>
+      <Content />
+    </div>
+    <div class="side"><Phonetic client:load /></div>
   </div>
-  <div class="CardLayout">
-    {words.map(word => <Word client:load word={word} />)}
-  </div>
-  <Content />
 </BaseLayout>
 
 <style>
+  .root {
+    display: flex;
+  }
+  .main {
+    width: calc(100vw - 400px);
+  }
+  .side {
+    width: 25rem;
+    height: 100vh;
+    overflow-y: auto;
+    margin-right: -20px;
+    padding-right: 20px;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    position: fixed;
+    right: 0;
+    top: 0;
+  }
+
   .CardLayout {
     display: grid;
     gap: 20px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     padding: 2.5rem 0;
+    padding-right: 5rem;
   }
 </style>
