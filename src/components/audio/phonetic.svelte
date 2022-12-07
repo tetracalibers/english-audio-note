@@ -353,6 +353,8 @@
     justify-content: center;
     align-items: center;
     line-height: 1.5;
+    background: rgb(255 255 255 / 60%);
+    border-radius: 20px;
   }
 
   .content {

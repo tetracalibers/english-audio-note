@@ -3,10 +3,17 @@
   import StopIcon from "../icons/stop-icon.svelte"
   import { Speaker } from "./speaker"
 
+  interface PhoneticWord {
+    word: string
+    phonetic: string
+  }
+
   export let en: string
   export let ja = ""
+  export let phonetics: PhoneticWord[] = []
 
   const speaker = new Speaker(en)
+  const hasPhonetics = phonetics.length > 0
 </script>
 
 <div class="PhraseSpeaker">
@@ -26,9 +33,14 @@
       <StopIcon size="1rem" />
     </button>
   </div>
-  <div class="PhraseSpeaker-Phrase">
+  <div class="PhraseSpeaker-Phrase" class:hasPhonetics>
+    {#if hasPhonetics}
+      <p class="-phonetics" aria-hidden="true">
+        {phonetics.map(p => p.phonetic).join(" ")}
+      </p>
+    {/if}
     <p lang="en">{en}</p>
-    <p lang="ja">{ja}</p>
+    <p class="-ja">{ja}</p>
   </div>
 </div>
 
@@ -37,11 +49,27 @@
     display: flex;
   }
 
-  .PhraseSpeaker-Phrase > :lang(en) {
+  .PhraseSpeaker-Phrase.hasPhonetics {
+    padding-bottom: 2.5rem;
+    margin-top: -2.5rem;
+  }
+
+  .PhraseSpeaker-Phrase :lang(en) {
     font-size: 1.5rem;
   }
 
-  .PhraseSpeaker-Phrase > :lang(ja) {
+  .PhraseSpeaker-Phrase .-phonetics {
+    font-size: 0.8rem;
+    line-height: 1;
+    height: 2.5rem;
+    padding-top: 1.7rem; /** 2.5rem - 0.8rem */
+    text-align-last: justify;
+    font-style: italic;
+    color: #6e85b7;
+    white-space: nowrap;
+  }
+
+  .PhraseSpeaker-Phrase .-ja {
     font-size: 0.8rem;
   }
 

@@ -5,6 +5,7 @@ import Word from "@/components/audio/word.svelte"
 import BaseLayout from "@/layouts/base-layout.astro"
 import { MarkdownInstance } from "astro"
 import path from "node:path"
+import TextToIPA from "text-to-ipa"
 
 type Word = {
   en: string
@@ -17,6 +18,7 @@ interface Props {
     title: string
     sentence: string
     words: { [w in string]: string | Omit<Word, "en"> }[]
+    phonetic?: boolean
   }>
 }
 
@@ -42,7 +44,7 @@ export async function getStaticPaths() {
 
 const { note } = Astro.props
 const { frontmatter, Content } = note
-const { sentence = "", words: _words = [] } = frontmatter
+const { sentence = "", words: _words = [], phonetic = false } = frontmatter
 
 const words: Word[] = _words.map(word => {
   const [en] = Object.keys(word)
@@ -59,6 +61,21 @@ const phrases = sentence.split("\n").map(str => {
   const en = str.replace(`<ja>${ja}</ja>`, "")
   return { ja, en }
 })
+
+const phoneticWords = phonetic
+  ? phrases.map((r, i) => {
+      return {
+        line: i,
+        words: r.en.split(" ").map(w => {
+          const ph: string = TextToIPA.lookup(w.toLowerCase()).text
+          return {
+            word: w,
+            phonetic: ph.includes("OR") ? `[${ph.replaceAll("OR", "||")}]` : ph,
+          }
+        }),
+      }
+    })
+  : []
 ---
 
 <BaseLayout frontmatter={frontmatter}>
@@ -66,8 +83,17 @@ const phrases = sentence.split("\n").map(str => {
     <div class="main">
       <div>
         {
-          phrases.map(({ en, ja }) =>
-            en.length > 0 ? <Phrase client:load en={en} ja={ja} /> : <br />,
+          phrases.map(({ en, ja }, i) =>
+            en.length > 0 ? (
+              <Phrase
+                client:load
+                en={en}
+                ja={ja}
+                phonetics={phoneticWords[i]?.words ?? []}
+              />
+            ) : (
+              <br />
+            ),
           )
         }
       </div>
@@ -76,7 +102,9 @@ const phrases = sentence.split("\n").map(str => {
       </div>
       <Content />
     </div>
-    <div class="side"><Phonetic client:load /></div>
+    <div class="side">
+      <Phonetic client:load />
+    </div>
   </div>
 </BaseLayout>
 
