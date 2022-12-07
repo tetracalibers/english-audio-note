@@ -116,6 +116,25 @@ words:
 
 過去形を指定している場合は、現在形に続けて過去形が発音されます。
 
+### phonetic - 発音記号を自動で表示
+
+frontmatterに`phonetic: true`を指定すると、英文内の単語が自動で解析され、各フレーズの上に発音記号が表示されます。
+
+（※ビルドやページ遷移が遅くなるので、必要な場合のみ指定を推奨します。）
+
+```
+---
+title: Sample
+sentence: （略）
+words: （略）
+phonetic: true
+---
+```
+
+![](doc/assets/sample-frontmatter-phonetics.png)
+
+文脈によって発音が異なる単語は、全てのパターンを`[パターン1 || パターン2 || ... ]`の形で列挙します。
+
 ## 追加予定の機能
 
 ### Audio
