@@ -6,6 +6,7 @@ import BaseLayout from "@/layouts/base-layout.astro"
 import { MarkdownInstance } from "astro"
 import path from "node:path"
 import TextToIPA from "text-to-ipa"
+import { english2ipa } from "@/data/dictionary-en"
 
 type Word = {
   en: string
@@ -63,17 +64,24 @@ const phrases = sentence.split("\n").map(str => {
 })
 
 const phoneticWords = phonetic
-  ? phrases.map((r, i) => {
-      return {
-        line: i,
-        words: r.en.split(" ").map(w => {
+  ? phrases.map(r => {
+      return r.en
+        .split(" ")
+        .map(_w => {
+          const w = _w
+            .toLowerCase()
+            .replaceAll(",", "")
+            .replaceAll("…", "")
+            .replaceAll("“", "")
+            .replaceAll("”", "")
+          const ipa: string = english2ipa[w]
+          if (ipa !== undefined) return ipa
           const ph: string = TextToIPA.lookup(w.toLowerCase()).text
-          return {
-            word: w,
-            phonetic: ph.includes("OR") ? `[${ph.replaceAll("OR", "||")}]` : ph,
-          }
-        }),
-      }
+          return ph.includes("OR")
+            ? `[${ph.replaceAll("OR", "||")}]`
+            : `{${ph}}`
+        })
+        .join(" ")
     })
   : []
 ---
@@ -89,7 +97,7 @@ const phoneticWords = phonetic
                 client:load
                 en={en}
                 ja={ja}
-                phonetics={phoneticWords[i]?.words ?? []}
+                phonetics={phoneticWords[i]}
               />
             ) : (
               <br />

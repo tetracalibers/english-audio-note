@@ -3,14 +3,9 @@
   import StopIcon from "../icons/stop-icon.svelte"
   import { Speaker } from "./speaker"
 
-  interface PhoneticWord {
-    word: string
-    phonetic: string
-  }
-
   export let en: string
   export let ja = ""
-  export let phonetics: PhoneticWord[] = []
+  export let phonetics: string = ""
 
   const speaker = new Speaker(en)
   const hasPhonetics = phonetics.length > 0
@@ -36,7 +31,7 @@
   <div class="PhraseSpeaker-Phrase" class:hasPhonetics>
     {#if hasPhonetics}
       <p class="-phonetics" aria-hidden="true">
-        {phonetics.map(p => p.phonetic).join(" ")}
+        {phonetics}
       </p>
     {/if}
     <p lang="en">{en}</p>
