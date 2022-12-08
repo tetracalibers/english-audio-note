@@ -7,6 +7,7 @@ import { MarkdownInstance } from "astro"
 import path from "node:path"
 import TextToIPA from "text-to-ipa"
 import { english2ipa } from "@/data/dictionary-en"
+import CardLayout from "@/components/layout/card-layout.svelte"
 
 type Word = {
   en: string
@@ -106,9 +107,9 @@ const phoneticWords = phonetic
         }
       </div>
       <Content />
-      <div class="CardLayout">
+      <CardLayout>
         {words.map(word => <Word client:load word={word} />)}
-      </div>
+      </CardLayout>
     </div>
     <div class="side">
       <Phonetic client:load />
@@ -135,12 +136,5 @@ const phoneticWords = phonetic
     position: fixed;
     right: 0;
     top: 0;
-  }
-
-  .CardLayout {
-    display: grid;
-    gap: 20px;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    padding: 2.5rem 0;
   }
 </style>
