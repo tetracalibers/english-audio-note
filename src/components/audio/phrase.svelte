@@ -3,9 +3,14 @@
   import StopIcon from "../icons/stop-icon.svelte"
   import { Speaker } from "./speaker"
 
-  export let en: string
-  export let ja = ""
-  export let phonetics: string = ""
+  interface Phrase {
+    en: string
+    ja?: string
+    phonetics?: string
+  }
+
+  export let phrase: Phrase
+  const { en, ja = "", phonetics = "" } = phrase
 
   const speaker = new Speaker(en)
   const hasPhonetics = phonetics.length > 0

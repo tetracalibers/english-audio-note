@@ -92,13 +92,11 @@ const phoneticWords = phonetic
     <div class="main">
       <div>
         {
-          phrases.map(({ en, ja }, i) =>
-            en.length > 0 ? (
+          phrases.map((ph, i) =>
+            ph.en.length > 0 ? (
               <Phrase
                 client:load
-                en={en}
-                ja={ja}
-                phonetics={phoneticWords[i]}
+                phrase={{ ...ph, phonetics: phoneticWords[i] }}
               />
             ) : (
               <br />
