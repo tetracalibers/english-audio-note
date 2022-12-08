@@ -105,10 +105,10 @@ const phoneticWords = phonetic
           )
         }
       </div>
+      <Content />
       <div class="CardLayout">
         {words.map(word => <Word client:load word={word} />)}
       </div>
-      <Content />
     </div>
     <div class="side">
       <Phonetic client:load />
